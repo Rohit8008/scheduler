@@ -11,16 +11,6 @@ export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) await auth.protect()
 })
 
-// export default clerkMiddleware();
-
-// export default clerkMiddleware((auth, req) => {
-//   if (!auth().userId && isProtectedRoute(req)) {
-//     // Add custom logic to run before redirecting
-
-//     return auth.protect();
-//   }
-// });
-
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
