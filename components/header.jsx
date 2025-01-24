@@ -9,10 +9,6 @@ import { checkUser } from "@/lib/checkUser";
 
 const Header = async () => {
   const user = await checkUser();
-  
-  // if (!user) {
-  //   return <></>;
-  // }
 
   return (
     <nav className="mx-auto py-2 px-4 flex justify-between items-center shadow-md border-b-2">
