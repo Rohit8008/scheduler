@@ -98,7 +98,7 @@ export async function getEventDetails(username, eventId) {
         select: {
           name: true,
           email: true,
-          username:true,
+          username: true,
           imageUrl: true,
         },
       },
