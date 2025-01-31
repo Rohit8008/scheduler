@@ -8,11 +8,11 @@ export async function updateUserName(username) {
   if (!userId) {
     throw new Error("Unauthorized");
   }
-  const exisitingUserName = await db?.user.findUnique({
+  const exisitingUser = await db?.user.findUnique({
     where: { username },
   });
 
-  if (exisitingUserName && exisitingUserName.id !== username) {
+  if (exisitingUser && exisitingUser.clerkUserId !== userId) {
     throw new Error("Username is Already taken");
   }
 
@@ -28,7 +28,7 @@ export async function updateUserName(username) {
     username,
   });
 
-  return { success: true };
+  return { success: true, message: "Username updated successfully" };
 }
 
 export async function getUserByUsername(username) {

@@ -12,6 +12,8 @@ import { updateUserName } from "@/actions/users";
 import { BarLoader } from "react-spinners";
 import { getLatestUpdates } from "@/actions/dashboard";
 import { format } from "date-fns";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const { isLoaded, user } = useUser(userNameSchema);
@@ -34,10 +36,23 @@ const Dashboard = () => {
     setValue("username", user?.username);
   }, [isLoaded]);
 
-  const { error, loading, fn: fnUpdateUsername } = useFetch(updateUserName);
+  const {
+    data: responseData,
+    error,
+    loading,
+    fn: fnUpdateUsername,
+  } = useFetch(updateUserName);
 
   const onSubmit = async (data) => {
-    fnUpdateUsername(data.username);
+    try {
+      await fnUpdateUsername(data.username);
+      if (responseData) {
+        toast.success("Username updated successfully!");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something Went Wrong");
+    }
   };
 
   const {
@@ -57,27 +72,30 @@ const Dashboard = () => {
           <CardTitle>Welcome, {user?.firstName}</CardTitle>
         </CardHeader>
         <CardContent>
-        {!loadingUpdates ? (
-          <div>
-            {upcomingMeetings && upcomingMeetings.length > 0 ? (
-              <ul>
-                {upcomingMeetings.map((meeting) => {
-                  return (
-                    <li key={meeting.id}>
-                      - {meeting.event.title} on{" "}
-                      {format(new Date(meeting.startTime), "MMM d,yyyy h:mm a")}{" "}
-                      with {meeting.name}
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p> No upcoming Meetings</p>
-            )}
-          </div>
-        ) : (
-          <p>Loading Updates...</p>
-        )}
+          {!loadingUpdates ? (
+            <div>
+              {upcomingMeetings && upcomingMeetings.length > 0 ? (
+                <ul>
+                  {upcomingMeetings.map((meeting) => {
+                    return (
+                      <li key={meeting.id}>
+                        - {meeting.event.title} on{" "}
+                        {format(
+                          new Date(meeting.startTime),
+                          "MMM d,yyyy h:mm a"
+                        )}{" "}
+                        with {meeting.name}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p> No upcoming Meetings</p>
+              )}
+            </div>
+          ) : (
+            <p>Loading Updates...</p>
+          )}
         </CardContent>
       </Card>
 
@@ -104,10 +122,13 @@ const Dashboard = () => {
             {loading && (
               <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />
             )}
-            <Button type="submit">Update Username</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Updating ..." : "Update Username"}
+            </Button>
           </form>
         </CardContent>
       </Card>
+      <ToastContainer />
     </div>
   );
 };
