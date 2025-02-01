@@ -9,7 +9,7 @@ const SignInPage = () => {
       <h3 className="text-xl text-gray-600 mb-8">
         Sign in to your scheduler to stay organized.
       </h3>
-      <SignIn />
+      <SignIn/>
     </>
   );
 };

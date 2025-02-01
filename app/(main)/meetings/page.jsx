@@ -2,6 +2,7 @@ import { getUserMeetings } from "@/actions/meeting";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MeetingList from "./_components/MeetingList";
 import { Suspense } from "react";
+import { PulseLoader } from "react-spinners";
 
 export const metadata = {
   title: "Your Meeting | Scheduler",
@@ -16,7 +17,13 @@ const MettingPage = () => {
         <TabsTrigger value="past">Past</TabsTrigger>
       </TabsList>
       <TabsContent value="upcoming">
-        <Suspense fallback={<div>Loading upcoming meetings...</div>}>
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center h-60">
+              <PulseLoader color="#3498db" size={10} />
+            </div>
+          }
+        >
           <UpcomingMeetings />
         </Suspense>
       </TabsContent>

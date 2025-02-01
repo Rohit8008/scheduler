@@ -14,6 +14,7 @@ import { getLatestUpdates } from "@/actions/dashboard";
 import { format } from "date-fns";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
   const { isLoaded, user } = useUser(userNameSchema);
@@ -43,6 +44,16 @@ const Dashboard = () => {
     fn: fnUpdateUsername,
   } = useFetch(updateUserName);
 
+  const {
+    loading: loadingUpdates,
+    data: upcomingMeetings,
+    fn: fnUpdates,
+  } = useFetch(getLatestUpdates);
+
+  useEffect(() => {
+    (async () => await fnUpdates())();
+  }, []);
+
   const onSubmit = async (data) => {
     try {
       await fnUpdateUsername(data.username);
@@ -54,16 +65,6 @@ const Dashboard = () => {
       toast.error("Something Went Wrong");
     }
   };
-
-  const {
-    loading: loadingUpdates,
-    data: upcomingMeetings,
-    fn: fnUpdates,
-  } = useFetch(getLatestUpdates);
-
-  useEffect(() => {
-    (async () => await fnUpdates())();
-  }, []);
 
   return (
     <div className="space-y-8">
@@ -94,7 +95,11 @@ const Dashboard = () => {
               )}
             </div>
           ) : (
-            <p>Loading Updates...</p>
+            <div className="space-y-4">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-6 w-2/3" />
+              <Skeleton className="h-6 w-1/2" />
+            </div>
           )}
         </CardContent>
       </Card>

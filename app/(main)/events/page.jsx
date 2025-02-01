@@ -1,10 +1,13 @@
 import { getUserEvents } from "@/actions/event";
 import EventCard from "@/components/EventCard";
 import { Suspense } from "react";
+import { PulseLoader } from "react-spinners";
 
 export default function EventsPage() {
   return (
-    <Suspense fallback={<div>Loading Events...</div>}>
+    <Suspense fallback={<div className="flex justify-center items-center h-60">
+      <PulseLoader color="#3498db" size={10} />
+    </div>}>
       <Events />
     </Suspense>
   );
