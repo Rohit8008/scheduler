@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import CreateEventDrawer from "@/components/CreateEvent";
-import Header from "@/components/Header";
+import Header from "@/components/header";
 
 export const metadata = {
   title: "Scheduler - Meeting Scheduling App",
